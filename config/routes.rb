@@ -3,4 +3,10 @@ Rails.application.routes.draw do
   post 'clock_in_out/clock_in', to:  'clock_in_out#clock_in'
   post 'clock_in_out/clock_out', to: 'clock_in_out#clock_out'
   get 'clock_in_out/index', to: 'clock_in_out#index'
+
+  resources :follow do
+    collection do
+      post :unfollow
+    end
+  end
 end
