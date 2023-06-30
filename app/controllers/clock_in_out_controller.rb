@@ -1,6 +1,10 @@
 class ClockInOutController < ApplicationController
   def index
-    list = ClockInOut.order(created_at: :desc)
+    if params[:following_id].blank?
+      list = ClockInOut.order(created_at: :desc)
+    else
+      list = ClockInOut.where(user_id: params[:following_id]).order(duration_ms: :desc)
+    end
 
     render json: { count: list.count, data: list }
   end
