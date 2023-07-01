@@ -11,16 +11,24 @@ class ClockInOutController < ApplicationController
 
   def clock_in
     user = User.find(params[:user_id])
-    ClockingService.new(user, Date.today).in
+    clocking_service = ClockingService.new(user, Date.today)
 
-    head :ok
+    if clocking_service.in
+      render json: clocking_service.clock_in_out
+    else
+      render json: { errors: clocking_service.clock_in_out.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def clock_out
     user = User.find(params[:user_id])
-    ClockingService.new(user, Date.today).out
+    clocking_service = ClockingService.new(user, Date.today)
 
-    head :ok
+    if clocking_service.out
+      render json: clocking_service.clock_in_out
+    else
+      render json: { errors: clocking_service.clock_in_out.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def show

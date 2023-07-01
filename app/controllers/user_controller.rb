@@ -1,7 +1,8 @@
 class UserController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :follow, :unfollow]
 
   def index
+    verify_authenticity_token
     @list = User.all
     render json: { count: @list.count, data: @list }
   end
@@ -32,6 +33,18 @@ class UserController < ApplicationController
   def destroy
     @user.destroy
     head :no_content
+  end
+
+  def follow
+    @target_user = User.find(params[:target_user_id])
+    @user.follow(@target_user)
+    render json: { message: "You are now following user with ID: #{params[:target_user_id]}" }
+  end
+
+  def unfollow
+    @target_user = User.find(params[:target_user_id])
+    @user.unfollow(@target_user)
+    render json: { message: "You have unfollowed user with ID: #{params[:target_user_id]}" }
   end
 
   private

@@ -10,5 +10,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :user
+  resources :user do
+    collection do
+      post 'follow'
+      post 'unfollow'
+    end
+  end
 end

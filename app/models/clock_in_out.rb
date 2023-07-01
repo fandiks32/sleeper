@@ -4,7 +4,7 @@ class ClockInOut < ApplicationRecord
 
   def calculate_duration_ms
     if (clock_in.present? && clock_out.present?) && (clock_out_changed?  || clock_in_changed?)
-      self.duration_ms = clock_out - clock_in
+      self.duration_ms = ((clock_out - clock_in) * 1000).to_i
     end
   end
 end
