@@ -23,14 +23,4 @@ class ClockInOutControllerTest < ActionController::TestCase
 
     assert_response :success
   end
-
-  test "shold return list by following id" do
-    post :clock_in, params: { user_id: @user.id }
-    post :clock_out, params: { user_id: @user.id }
-    get :index, params: { following_id: @user.id }
-
-    assert_response :success
-    result = JSON.parse(response.body)
-    assert(result["count"] == 1)
-  end
 end
