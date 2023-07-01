@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy, :follow, :unfollow]
+  before_action :set_user, only: [:show, :update, :destroy, :follow, :unfollow, :followers_sleep_time]
 
   def index
     verify_authenticity_token
@@ -45,6 +45,11 @@ class UserController < ApplicationController
     @target_user = User.find(params[:target_user_id])
     @user.unfollow(@target_user)
     render json: { message: "You have unfollowed user with ID: #{params[:target_user_id]}" }
+  end
+
+  def followers_sleep_time
+    @list = ClockInOut.where(user_id: Follow.where(following_id: @user.id).pluck(:follower_id)).order(duration_ms: :desc)
+    render json: { count: @list&.count.to_i, data: @list }
   end
 
   private

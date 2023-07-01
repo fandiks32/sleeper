@@ -12,8 +12,9 @@ Rails.application.routes.draw do
 
   resources :user do
     collection do
-      post 'follow'
-      post 'unfollow'
+      post :follow
+      post :unfollow
+      get :followers_sleep_time
     end
   end
 end
