@@ -9,4 +9,6 @@ Rails.application.routes.draw do
       post :unfollow
     end
   end
+
+  resources :user
 end
