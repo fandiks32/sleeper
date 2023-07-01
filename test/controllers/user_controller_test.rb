@@ -54,4 +54,14 @@ class UserControllerTest < ActionController::TestCase
     assert_not @current_user.following?(@user_to_follow)
     assert_response :success
   end
+
+  test 'follower sleep times' do
+    ClockingService.new(@current_user, Date.today).in
+    ClockingService.new(@current_user, Date.today).out
+    @current_user.follow(@user_to_follow)
+
+    get :followers_sleep_time, params: { id: @current_user.id }
+    assert_response :success
+    assert_not_nil assigns(:list)
+  end
 end
