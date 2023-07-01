@@ -48,7 +48,10 @@ class UserController < ApplicationController
   end
 
   def followers_sleep_time
-    @list = ClockInOut.where(user_id: Follow.where(following_id: @user.id).pluck(:follower_id)).order(duration_ms: :desc)
+    @list = ClockInOut.
+              where(user_id: Follow.where(following_id: @user.id).pluck(:follower_id),
+                    target_date: (Date.today - 1.weeks)..Date.today).
+              order(duration_ms: :desc)
     render json: { count: @list&.count.to_i, data: @list }
   end
 
